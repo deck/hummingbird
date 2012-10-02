@@ -1,0 +1,8 @@
+#Editor cruft
+.*.sw?
+\#*\#
+.\#*
+*~
+
+# OS X
+.DS_Store
