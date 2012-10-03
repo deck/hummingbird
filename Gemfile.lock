@@ -1,0 +1,18 @@
+PATH
+  remote: .
+  specs:
+    lowmagic-migrations (0.0.1)
+      sequel
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    rake (0.9.2.2)
+    sequel (3.40.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  lowmagic-migrations!
+  rake
