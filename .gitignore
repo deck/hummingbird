@@ -1,3 +1,6 @@
+# Packaged Gem
+/pkg/
+
 #Editor cruft
 .*.sw?
 \#*\#
