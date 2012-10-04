@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    lowmagic-migrations (0.0.1)
+    hummingbird (0.0.1)
       sequel
 
 GEM
@@ -15,6 +15,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  lowmagic-migrations!
+  hummingbird!
   minitest
   rake

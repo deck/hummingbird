@@ -1,7 +1,8 @@
 # Packaged Gem
 /pkg/
 
-#Editor cruft
+# Developer specific files & editor cruft
+.rvmrc
 .*.sw?
 \#*\#
 .\#*
