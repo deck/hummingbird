@@ -1,0 +1,3 @@
+---
+planfile: 'application.plan'
+migrations_dir: 'migrations'

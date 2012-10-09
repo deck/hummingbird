@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     hummingbird (0.0.1)
+      optimism
       sequel
 
 GEM
@@ -12,8 +13,13 @@ GEM
       thor (>= 0.14.6)
     guard-minitest (0.5.0)
       guard (>= 0.4)
+    json (1.7.5)
     listen (0.5.3)
     minitest (4.0.0)
+    optimism (3.3.1)
+      json
+      pd
+    pd (1.1.0)
     rake (0.9.2.2)
     sequel (3.40.0)
     thor (0.16.0)

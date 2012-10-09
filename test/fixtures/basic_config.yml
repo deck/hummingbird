@@ -1,0 +1,4 @@
+---
+basedir: 'sql'
+planfile: 'application.plan'
+migrations_dir: 'migrations-dir'

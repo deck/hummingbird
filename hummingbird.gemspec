@@ -20,6 +20,7 @@ DESC
   gem.required_ruby_version = '>= 1.8.7'
 
   gem.add_dependency 'sequel'
+  gem.add_dependency 'optimism'
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'minitest'
