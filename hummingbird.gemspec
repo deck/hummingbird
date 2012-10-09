@@ -23,4 +23,6 @@ DESC
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'minitest'
+  gem.add_development_dependency 'guard'
+  gem.add_development_dependency 'guard-minitest'
 end
