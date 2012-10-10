@@ -2,6 +2,7 @@
 /pkg/
 
 # Developer specific files & editor cruft
+Gemfile.lock
 .rvmrc
 .*.sw?
 \#*\#
