@@ -8,5 +8,8 @@
 .\#*
 *~
 
+# SimpleCov
+/coverage/
+
 # OS X
 .DS_Store

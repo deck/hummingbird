@@ -26,4 +26,5 @@ DESC
   gem.add_development_dependency 'minitest'
   gem.add_development_dependency 'guard'
   gem.add_development_dependency 'guard-minitest'
+  gem.add_development_dependency 'simplecov'
 end
