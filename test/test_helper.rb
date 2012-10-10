@@ -2,6 +2,7 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require 'hummingbird'
 require 'tempfile'
+require 'set'
 
 FIXTURE_DIR = File.expand_path(File.join(File.dirname(__FILE__),'fixtures'))
 
@@ -38,5 +39,21 @@ class MiniTest::Unit::TestCase
 
   def copy_fixture_to(fixture, dest)
     FileUtils.cp(path_to_fixture(fixture), dest)
+  end
+
+  def assert_set_equal(exp, act, msg = nil)
+    exp_set = exp.to_set
+    act_set = act.to_set
+
+    msg = message(msg,'') do
+      m = <<-EOM
+Expected set equality:
+  Expected: #{mu_pp(exp)}
+  Actual:   #{mu_pp(act)}
+  Extra:    #{mu_pp((act_set - exp_set).to_a)}
+  Missing:  #{mu_pp((exp_set - act_set).to_a)}
+EOM
+    end
+    assert exp_set == act_set, msg
   end
 end
