@@ -29,8 +29,8 @@ class MiniTest::Unit::TestCase
     d
   end
 
-  def path_to_fixture(name)
-    File.join(FIXTURE_DIR, name)
+  def path_to_fixture(*name)
+    File.join(FIXTURE_DIR, *name)
   end
 
   def read_fixture(name)
