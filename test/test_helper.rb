@@ -1,6 +1,12 @@
+require 'simplecov'
+
+SimpleCov.start do
+  add_filter '/test'
+end
+SimpleCov.command_name 'test'
+
 require 'minitest/autorun'
 require 'minitest/pride'
-require 'simplecov'
 require 'hummingbird'
 require 'tempfile'
 require 'set'
