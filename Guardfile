@@ -1,4 +1,5 @@
 # More info at https://github.com/guard/guard#readme
+ignore /^coverage\//
 
 guard 'minitest' do
   # with Minitest::Unit
