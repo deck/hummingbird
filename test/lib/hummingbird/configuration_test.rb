@@ -26,7 +26,7 @@ describe Hummingbird::Configuration do
     assert_equal _with_basedir(config, 'migrations-dir'),   config.migrations_dir
   end
 
-  it "defaults :basedir to be '.'" do
+  it "defaults #basedir to be '.'" do
     copy_fixture_to(
       'no_basedir_config.yml',
       File.join(@tempdir, Hummingbird::Configuration::CONFIG_FILE)
@@ -37,7 +37,7 @@ describe Hummingbird::Configuration do
     assert_equal '.', config.basedir
   end
 
-  it "defaults :planfile to be basedir + 'hummingbird.plan'" do
+  it "defaults #planfile to be basedir + 'hummingbird.plan'" do
     copy_fixture_to(
       'no_planfile_config.yml',
       File.join(@tempdir, Hummingbird::Configuration::CONFIG_FILE)
@@ -48,7 +48,7 @@ describe Hummingbird::Configuration do
     assert_equal _with_basedir(config,'hummingbird.plan'), config.planfile
   end
 
-  it "defaults :migrations_dir to be basedir + 'migrations'" do
+  it "defaults #migrations_dir to be basedir + 'migrations'" do
     copy_fixture_to(
       'no_migrations_dir_config.yml',
       File.join(@tempdir, Hummingbird::Configuration::CONFIG_FILE)
