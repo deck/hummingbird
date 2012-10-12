@@ -40,8 +40,8 @@ class MiniTest::Unit::TestCase
     File.join(FIXTURE_DIR, *name)
   end
 
-  def read_fixture(name)
-    File.read path_to_fixture(name)
+  def read_fixture(*name)
+    File.read path_to_fixture(*name)
   end
 
   def copy_fixture_to(fixture, dest)
