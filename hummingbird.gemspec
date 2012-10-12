@@ -27,4 +27,5 @@ DESC
   gem.add_development_dependency 'guard'
   gem.add_development_dependency 'guard-minitest'
   gem.add_development_dependency 'simplecov'
+  gem.add_development_dependency 'sqlite3'
 end
