@@ -2,4 +2,3 @@
 basedir: 'sql'
 planfile: 'application.plan'
 migrations_dir: 'migrations-dir'
-migrations_table: 'application_migrations'

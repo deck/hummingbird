@@ -23,5 +23,9 @@ class Hummingbird
     def migrations_dir
       File.expand_path(File.join(basedir, @config[:migrations_dir] || 'migrations'))
     end
+
+    def migrations_table
+      (@config[:migrations_table] || :hummingbird_migrations).to_sym
+    end
   end
 end

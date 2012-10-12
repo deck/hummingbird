@@ -24,6 +24,7 @@ describe Hummingbird::Configuration do
     assert_equal 'sql',                                     config.basedir
     assert_equal _with_basedir(config, 'application.plan'), config.planfile
     assert_equal _with_basedir(config, 'migrations-dir'),   config.migrations_dir
+    assert_equal :application_migrations,                   config.migrations_table
   end
 
   it "defaults #basedir to be '.'" do
@@ -57,6 +58,17 @@ describe Hummingbird::Configuration do
     config = Hummingbird::Configuration.new(@tempdir)
 
     assert_equal _with_basedir(config,'migrations'), config.migrations_dir
+  end
+
+  it 'defaults #migrations_table to be :hummingbird_migrations' do
+    copy_fixture_to(
+      'no_migrations_table_config.yml',
+      File.join(@tempdir, Hummingbird::Configuration::CONFIG_FILE)
+    )
+
+    config = Hummingbird::Configuration.new(@tempdir)
+
+    assert_equal :hummingbird_migrations, config.migrations_table
   end
 
   it "prefers the user's configuration file if one is present" do
