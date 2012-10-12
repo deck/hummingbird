@@ -25,6 +25,7 @@ describe Hummingbird::Configuration do
     assert_equal _with_basedir(config, 'application.plan'), config.planfile
     assert_equal _with_basedir(config, 'migrations-dir'),   config.migrations_dir
     assert_equal :application_migrations,                   config.migrations_table
+    assert_equal 'sequel connection string',                config.connection_string
   end
 
   it "defaults #basedir to be '.'" do
@@ -69,6 +70,17 @@ describe Hummingbird::Configuration do
     config = Hummingbird::Configuration.new(@tempdir)
 
     assert_equal :hummingbird_migrations, config.migrations_table
+  end
+
+  it "does not have a default #connection_string" do
+    copy_fixture_to(
+      'no_connection_string_config.yml',
+      File.join(@tempdir, Hummingbird::Configuration::CONFIG_FILE)
+    )
+
+    config = Hummingbird::Configuration.new(@tempdir)
+
+    assert_equal nil, config.connection_string
   end
 
   it "prefers the user's configuration file if one is present" do

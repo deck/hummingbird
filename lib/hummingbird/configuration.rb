@@ -13,19 +13,23 @@ class Hummingbird
     end
 
     def basedir
-      @config[:basedir] || '.'
+      @basedir ||= @config[:basedir] || '.'
     end
 
     def planfile
-      File.expand_path(File.join(basedir, @config[:planfile] || 'hummingbird.plan'))
+      @planfile ||= File.expand_path(File.join(basedir, @config[:planfile] || 'hummingbird.plan'))
     end
 
     def migrations_dir
-      File.expand_path(File.join(basedir, @config[:migrations_dir] || 'migrations'))
+      @migrations_dir ||= File.expand_path(File.join(basedir, @config[:migrations_dir] || 'migrations'))
     end
 
     def migrations_table
-      (@config[:migrations_table] || :hummingbird_migrations).to_sym
+      @migrations_table ||= (@config[:migrations_table] || :hummingbird_migrations).to_sym
+    end
+
+    def connection_string
+      @connection_string ||= @config[:connection_string]
     end
   end
 end
