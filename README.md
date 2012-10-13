@@ -11,7 +11,7 @@ common denominator amongst those databases.
 
 # Resources
 
-* [Travis CI][travis-ci] [![Build Status](https://secure.travis-ci.org/jhelwig/hummingbird.png)](http://travis-ci.org/jhelwig/hummingbird)
+* [Travis CI][travis-ci] [![Build Status](https://secure.travis-ci.org/jhelwig/hummingbird.png?branch=master)](http://travis-ci.org/jhelwig/hummingbird)
 * [Issues][issues]
 
 [travis-ci]: http://travis-ci.org "Travis CI"
