@@ -11,7 +11,7 @@ class Hummingbird
       @sequel_db.tables.include?(@migrations_table_name)
     end
 
-    def migrations_run
+    def already_run_migrations
       initialized? ? @sequel_db[@migrations_table_name].order(:run_on).to_a : []
     end
   end

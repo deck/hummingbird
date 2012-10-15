@@ -45,7 +45,7 @@ describe Hummingbird::Database do
 
       db = Hummingbird::Database.new(config)
 
-      assert_set_equal [], db.migrations_run
+      assert_set_equal [], db.already_run_migrations
 
       config.verify
     end
@@ -70,7 +70,7 @@ describe Hummingbird::Database do
           { migration_name: 'second_migration.sql', run_on: DateTime.new(2012,10, 8, 8,0,0,'-7').strftime('%s').to_i },
           { migration_name: 'third_migration.sql',  run_on: DateTime.new(2012,10,11,12,0,0,'-7').strftime('%s').to_i }
         ],
-        db.migrations_run
+        db.already_run_migrations
       )
 
       config.verify
