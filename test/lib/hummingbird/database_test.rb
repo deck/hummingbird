@@ -75,5 +75,62 @@ describe Hummingbird::Database do
 
       config.verify
     end
+
+    it 'records and runs migrations specified via #run_migration' do
+      sqlite_db_path = tempfile.path
+      connect_string = "sqlite://#{sqlite_db_path}"
+      sqlite_db = SQLite3::Database.new(sqlite_db_path)
+      sqlite_db.execute read_fixture('sql', 'migrations_table.sql')
+
+      config = MiniTest::Mock.new
+      config.expect :connection_string, connect_string
+      config.expect :migrations_table,  :hummingbird_migrations
+
+      db = Hummingbird::Database.new(config)
+
+      migration_time = DateTime.new(2012,10,15,14,03,40,'-7')
+      DateTime.stub :now, migration_time do
+        db.run_migration('test_migration.sql', 'CREATE TABLE test_table (col1 text);')
+      end
+
+      assert_equal(
+        [{migration_name: 'test_migration.sql', run_on: migration_time.strftime('%s').to_i}],
+        db.already_run_migrations
+      )
+
+      assert_includes Sequel.connect(connect_string).tables, :test_table
+
+      config.verify
+    end
+
+    it 'allows bootstrapping the DB via #run_migration' do
+      sqlite_db_path = tempfile.path
+      connect_string = "sqlite://#{sqlite_db_path}"
+      sqlite_db = SQLite3::Database.new(sqlite_db_path)
+
+      config = MiniTest::Mock.new
+      config.expect :connection_string, connect_string
+      config.expect :migrations_table,  :hummingbird_migrations
+
+      db = Hummingbird::Database.new(config)
+
+      seconds = 40
+      DateTime.stub :now, lambda { DateTime.new(2012,10,15,14,03,seconds+=1,'-7') } do
+        db.run_migration('bootstrap_hummingbird.sql', read_fixture('sql', 'migrations_table.sql'))
+        db.run_migration('test_migration.sql', 'CREATE TABLE test_table (col1 text);')
+      end
+
+      assert_equal(
+        [
+          {migration_name: 'bootstrap_hummingbird.sql', run_on: DateTime.new(2012,10,15,14,03,41,'-7').strftime('%s').to_i},
+          {migration_name: 'test_migration.sql',        run_on: DateTime.new(2012,10,15,14,03,42,'-7').strftime('%s').to_i}
+        ],
+        db.already_run_migrations
+      )
+
+      assert_includes Sequel.connect(connect_string).tables, :test_table
+
+      config.verify
+    end
   end
 end
