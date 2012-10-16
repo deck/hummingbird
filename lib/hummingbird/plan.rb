@@ -1,3 +1,5 @@
+require 'hummingbird/plan_error'
+
 require 'pathname'
 
 class Hummingbird
@@ -19,6 +21,27 @@ class Hummingbird
 
     def files_missing_from_migration_dir
       planned_files - migration_files
+    end
+
+    def migrations_to_be_run(already_run_migrations)
+      return planned_files if already_run_migrations.empty?
+
+      unless (run_migrations_missing_from_plan = already_run_migrations.map {|a| a[:migration_name]} - planned_files).empty?
+        raise Hummingbird::PlanError.new("Plan is missing the following already run migrations: #{run_migrations_missing_from_plan.join(', ')}",planned_files,already_run_migrations)
+      end
+
+      files = planned_files
+      already_run_migrations.each do |f|
+        if f[:migration_name] == files.first
+          files.shift
+        else
+          first_out_of_sync_run_on = DateTime.strptime(f[:run_on].to_s, '%s')
+
+          raise Hummingbird::PlanError.new("Plan has '#{files.first}' before '#{f[:migration_name]}' which was run on #{first_out_of_sync_run_on}",planned_files,already_run_migrations)
+        end
+      end
+
+      files
     end
 
     private
