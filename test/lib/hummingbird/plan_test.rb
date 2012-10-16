@@ -17,9 +17,10 @@ describe Hummingbird::Plan do
 
     plan = Hummingbird::Plan.new(path_to_fixture('plan','basic.plan'), migration_dir)
 
-    migration_files.each do |f|
-      assert_includes plan.migration_files, f
-    end
+    assert_equal(
+      migration_files,
+      plan.migration_files
+    )
   end
 
   it 'recurses into config.migration_dir to get the list of migration files' do
@@ -30,9 +31,10 @@ describe Hummingbird::Plan do
 
     plan = Hummingbird::Plan.new(path_to_fixture('plan','basic.plan'), migration_dir)
 
-    migration_files.each do |f|
-      assert_includes plan.migration_files, f
-    end
+    assert_equal(
+      migration_files,
+      plan.migration_files
+    )
   end
 
   it 'returns the list of files missing from the plan' do
