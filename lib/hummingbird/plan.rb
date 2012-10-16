@@ -4,9 +4,9 @@ class Hummingbird
   class Plan
     attr_reader :migration_dir, :planned_files
 
-    def initialize(config)
-      @planned_files = parse_plan(config.planfile)
-      @migration_dir = config.migration_dir
+    def initialize(planfile, migration_dir)
+      @planned_files = parse_plan(planfile)
+      @migration_dir = migration_dir
     end
 
     def migration_files
