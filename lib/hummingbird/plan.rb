@@ -24,6 +24,15 @@ class Hummingbird
     end
 
     def migrations_to_be_run(already_run_migrations)
+      to_be_run_migration_file_names(already_run_migrations).map do |f|
+        {
+          migration_name: f,
+          sql: get_migration_contents(f)
+        }
+      end
+    end
+
+    def to_be_run_migration_file_names(already_run_migrations)
       return planned_files if already_run_migrations.empty?
 
       unless (run_migrations_missing_from_plan = already_run_migrations.map {|a| a[:migration_name]} - planned_files).empty?
@@ -42,6 +51,10 @@ class Hummingbird
       end
 
       files
+    end
+
+    def get_migration_contents(migration_file)
+      File.read(File.absolute_path(migration_file, @migration_dir))
     end
 
     private

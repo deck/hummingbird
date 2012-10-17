@@ -71,7 +71,7 @@ describe Hummingbird::Plan do
     assert_set_equal [], plan.files_missing_from_plan, 'Wrong files missing from plan'
   end
 
-  describe '#migrations_to_be_run' do
+  describe '#to_be_run_migration_file_names' do
     it 'returns all planned files when the db is uninitialized' do
       sqlite_db_path = tempfile.path
 
@@ -80,7 +80,7 @@ describe Hummingbird::Plan do
 
       assert_equal(
         ['file1.sql','file2.sql','file3.sql','file4.sql'],
-        plan.migrations_to_be_run(db.already_run_migrations)
+        plan.to_be_run_migration_file_names(db.already_run_migrations)
       )
     end
 
@@ -95,7 +95,7 @@ describe Hummingbird::Plan do
 
       assert_equal(
         ['file1.sql','file2.sql','file3.sql','file4.sql'],
-        plan.migrations_to_be_run(db.already_run_migrations)
+        plan.to_be_run_migration_file_names(db.already_run_migrations)
       )
     end
 
@@ -113,7 +113,7 @@ describe Hummingbird::Plan do
 
       assert_equal(
         ['file3.sql','file4.sql'],
-        plan.migrations_to_be_run(db.already_run_migrations)
+        plan.to_be_run_migration_file_names(db.already_run_migrations)
       )
     end
 
@@ -131,7 +131,7 @@ describe Hummingbird::Plan do
       db   = Hummingbird::Database.new(connect_string, :hummingbird_migrations)
 
       e = assert_raises Hummingbird::PlanError do
-        plan.migrations_to_be_run(db.already_run_migrations)
+        plan.to_be_run_migration_file_names(db.already_run_migrations)
       end
 
       assert_equal "Plan has 'file2.sql' before 'file3.sql' which was run on #{file3_run_on.new_offset(0)}", e.message
@@ -153,7 +153,7 @@ describe Hummingbird::Plan do
       db   = Hummingbird::Database.new(connect_string, :hummingbird_migrations)
 
       e = assert_raises Hummingbird::PlanError do
-        plan.migrations_to_be_run(db.already_run_migrations)
+        plan.to_be_run_migration_file_names(db.already_run_migrations)
       end
 
       assert_equal "Plan has 'file2.sql' before 'file4.sql' which was run on #{file4_run_on.new_offset(0)}", e.message
@@ -175,10 +175,37 @@ describe Hummingbird::Plan do
       db   = Hummingbird::Database.new(connect_string, :hummingbird_migrations)
 
       e = assert_raises Hummingbird::PlanError do
-        plan.migrations_to_be_run(db.already_run_migrations)
+        plan.to_be_run_migration_file_names(db.already_run_migrations)
       end
 
       assert_equal "Plan is missing the following already run migrations: file5.sql", e.message
+    end
+  end
+
+  describe '#migrations_to_be_run' do
+    it 'attaches the migration file contents to the #to_be_run_migration_file_names list' do
+      sqlite_db_path = tempfile.path
+      connect_string = "sqlite://#{sqlite_db_path}"
+      sqlite_db = SQLite3::Database.new(sqlite_db_path)
+      sqlite_db.execute read_fixture('sql', 'migrations_table.sql')
+      stmt = sqlite_db.prepare('INSERT INTO hummingbird_migrations (migration_name, run_on) VALUES (?,?);')
+      [ ['file1.sql', DateTime.new(2012,10, 1,12,0,0,'-7').strftime('%s')],
+        ['file2.sql', DateTime.new(2012,10,11,13,0,0,'-7').strftime('%s')]].each {|data| stmt.execute(*data)}
+
+      plan = Hummingbird::Plan.new(path_to_fixture('plan','basic.plan'), path_to_fixture('sql','migrations','basic'))
+      db   = Hummingbird::Database.new(connect_string, :hummingbird_migrations)
+
+      migrations = plan.stub :to_be_run_migration_file_names, ['file3.sql','file4.sql'] do
+        plan.migrations_to_be_run(db.already_run_migrations)
+      end
+
+      assert_equal(
+        [
+          {migration_name: 'file3.sql', sql: "CREATE TABLE table3 (name text);\n"},
+          {migration_name: 'file4.sql', sql: "CREATE TABLE table4 (name text);\n"},
+        ],
+        migrations
+      )
     end
   end
 end
