@@ -19,8 +19,8 @@ describe Hummingbird::Plan do
     plan = Hummingbird::Plan.new(path_to_fixture('plan','basic.plan'), migration_dir)
 
     assert_equal(
-      migration_files,
-      plan.migration_files
+      migration_files.sort,
+      plan.migration_files.sort
     )
   end
 
@@ -33,8 +33,8 @@ describe Hummingbird::Plan do
     plan = Hummingbird::Plan.new(path_to_fixture('plan','basic.plan'), migration_dir)
 
     assert_equal(
-      migration_files,
-      plan.migration_files
+      migration_files.sort,
+      plan.migration_files.sort
     )
   end
 
