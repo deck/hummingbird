@@ -2,9 +2,9 @@ require 'sequel'
 
 class Hummingbird
   class Database
-    def initialize(config)
-      @sequel_db = Sequel.connect(config.connection_string)
-      @migrations_table_name = config.migrations_table
+    def initialize(connection_string, migrations_table)
+      @sequel_db                     = Sequel.connect(connection_string)
+      @migrations_table_name         = migrations_table
       @prepared_run_migration_insert = nil
     end
 
