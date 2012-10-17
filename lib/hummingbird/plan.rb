@@ -39,7 +39,7 @@ class Hummingbird
         raise Hummingbird::PlanError.new("Plan is missing the following already run migrations: #{run_migrations_missing_from_plan.join(', ')}",planned_files,already_run_migrations)
       end
 
-      files = planned_files
+      files = planned_files.dup
       already_run_migrations.each do |f|
         if f[:migration_name] == files.first
           files.shift

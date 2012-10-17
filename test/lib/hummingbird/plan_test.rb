@@ -180,6 +180,25 @@ describe Hummingbird::Plan do
 
       assert_equal "Plan is missing the following already run migrations: file5.sql", e.message
     end
+
+    it 'does not modify #planned_files' do
+      sqlite_db_path = tempfile.path
+      connect_string = "sqlite://#{sqlite_db_path}"
+      sqlite_db = SQLite3::Database.new(sqlite_db_path)
+      sqlite_db.execute read_fixture('sql', 'migrations_table.sql')
+      stmt = sqlite_db.prepare('INSERT INTO hummingbird_migrations (migration_name, run_on) VALUES (?,?);')
+      [ ['file1.sql', DateTime.new(2012,10, 1,12,0,0,'-7').strftime('%s')],
+        ['file2.sql', DateTime.new(2012,10,11,13,0,0,'-7').strftime('%s')]].each {|data| stmt.execute(*data)}
+
+      plan = Hummingbird::Plan.new(path_to_fixture('plan','basic.plan'), path_to_fixture('sql','migrations','basic'))
+      db   = Hummingbird::Database.new(connect_string, :hummingbird_migrations)
+
+      assert_equal ['file1.sql','file2.sql','file3.sql','file4.sql'], plan.planned_files
+
+      plan.to_be_run_migration_file_names(db.already_run_migrations)
+
+      assert_equal ['file1.sql','file2.sql','file3.sql','file4.sql'], plan.planned_files
+    end
   end
 
   describe '#migrations_to_be_run' do
