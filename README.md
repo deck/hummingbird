@@ -75,7 +75,7 @@ handle the maximum file path relative to `migrations_dir`), and a
 `run_on` column of type `INTEGER`.
 
 The following is an example for defining the `migrations_table` for
-SQLite3:
+SQLite3, and PostgreSQL:
 
 ```sql
 CREATE TABLE hummingbird_migrations (
