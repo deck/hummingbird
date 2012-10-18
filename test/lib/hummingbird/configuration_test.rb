@@ -148,6 +148,6 @@ describe Hummingbird::Configuration do
   end
 
   def _with_basedir(config,path)
-    File.expand_path(File.join(config.basedir,path))
+    File.expand_path(path,config.basedir)
   end
 end
