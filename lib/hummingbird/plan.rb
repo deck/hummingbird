@@ -54,7 +54,7 @@ class Hummingbird
     end
 
     def get_migration_contents(migration_file)
-      File.read(File.absolute_path(migration_file, @migration_dir))
+      File.read(File.expand_path(migration_file, @migration_dir))
     end
 
     private
