@@ -45,7 +45,7 @@ class MiniTest::Unit::TestCase
   end
 
   def copy_fixture_to(fixture, dest)
-    FileUtils.cp(path_to_fixture(fixture), dest)
+    FileUtils.cp(path_to_fixture(*fixture), dest)
   end
 
   def assert_set_equal(exp, act, msg = nil)
