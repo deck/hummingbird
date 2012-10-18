@@ -15,7 +15,7 @@ describe Hummingbird::Configuration do
 
   it 'loads the hummingbird.yml file from the specified config_dir' do
     copy_fixture_to(
-      'basic_config.yml',
+      ['config','basic_config.yml'],
       File.join(@tempdir, Hummingbird::Configuration::CONFIG_FILE)
     )
 
@@ -30,7 +30,7 @@ describe Hummingbird::Configuration do
 
   it "defaults #basedir to be '.'" do
     copy_fixture_to(
-      'no_basedir_config.yml',
+      ['config','no_basedir_config.yml'],
       File.join(@tempdir, Hummingbird::Configuration::CONFIG_FILE)
     )
 
@@ -41,7 +41,7 @@ describe Hummingbird::Configuration do
 
   it "defaults #planfile to be basedir + 'hummingbird.plan'" do
     copy_fixture_to(
-      'no_planfile_config.yml',
+      ['config','no_planfile_config.yml'],
       File.join(@tempdir, Hummingbird::Configuration::CONFIG_FILE)
     )
 
@@ -52,7 +52,7 @@ describe Hummingbird::Configuration do
 
   it "defaults #migrations_dir to be basedir + 'migrations'" do
     copy_fixture_to(
-      'no_migrations_dir_config.yml',
+      ['config','no_migrations_dir_config.yml'],
       File.join(@tempdir, Hummingbird::Configuration::CONFIG_FILE)
     )
 
@@ -63,7 +63,7 @@ describe Hummingbird::Configuration do
 
   it 'defaults #migrations_table to be :hummingbird_migrations' do
     copy_fixture_to(
-      'no_migrations_table_config.yml',
+      ['config','no_migrations_table_config.yml'],
       File.join(@tempdir, Hummingbird::Configuration::CONFIG_FILE)
     )
 
@@ -74,7 +74,7 @@ describe Hummingbird::Configuration do
 
   it "does not have a default #connection_string" do
     copy_fixture_to(
-      'no_connection_string_config.yml',
+      ['config','no_connection_string_config.yml'],
       File.join(@tempdir, Hummingbird::Configuration::CONFIG_FILE)
     )
 
@@ -83,10 +83,10 @@ describe Hummingbird::Configuration do
     assert_equal nil, config.connection_string
   end
 
-  it "prefers the user's configuration file if one is present" do
-    [['basic_config.yml', Hummingbird::Configuration::CONFIG_FILE],
-      ['user_config.yml', Hummingbird::Configuration::USER_CONFIG_FILE]].each do |s,d|
-      copy_fixture_to(s, File.join(@tempdir, d))
+  it "prefers the user's configuration file if one is present in the config dir" do
+    [ ['basic_config.yml', Hummingbird::Configuration::CONFIG_FILE],
+      ['user_config.yml',  Hummingbird::Configuration::USER_CONFIG_FILE]].each do |s,d|
+      copy_fixture_to(['config',s], File.join(@tempdir, d))
     end
 
     config = nil
@@ -100,9 +100,9 @@ describe Hummingbird::Configuration do
   end
 
   it "uses non-user basedir if not present for user" do
-    [['basic_config.yml', Hummingbird::Configuration::CONFIG_FILE],
+    [ ['basic_config.yml',           Hummingbird::Configuration::CONFIG_FILE],
       ['no_basedir_user_config.yml', Hummingbird::Configuration::USER_CONFIG_FILE]].each do |s,d|
-      copy_fixture_to(s, File.join(@tempdir, d))
+      copy_fixture_to(['config',s], File.join(@tempdir, d))
     end
 
     config = nil
@@ -116,9 +116,9 @@ describe Hummingbird::Configuration do
   end
 
   it "uses non-user planfile if not present for user" do
-    [['basic_config.yml', Hummingbird::Configuration::CONFIG_FILE],
+    [ ['basic_config.yml',            Hummingbird::Configuration::CONFIG_FILE],
       ['no_planfile_user_config.yml', Hummingbird::Configuration::USER_CONFIG_FILE]].each do |s,d|
-      copy_fixture_to(s, File.join(@tempdir, d))
+      copy_fixture_to(['config',s], File.join(@tempdir, d))
     end
 
     config = nil
@@ -132,9 +132,9 @@ describe Hummingbird::Configuration do
   end
 
   it "uses non-user migrations_dir if not present for user" do
-    [['basic_config.yml', Hummingbird::Configuration::CONFIG_FILE],
+    [ ['basic_config.yml',                  Hummingbird::Configuration::CONFIG_FILE],
       ['no_migrations_dir_user_config.yml', Hummingbird::Configuration::USER_CONFIG_FILE]].each do |s,d|
-      copy_fixture_to(s, File.join(@tempdir, d))
+      copy_fixture_to(['config',s], File.join(@tempdir, d))
     end
 
     config = nil
