@@ -1,0 +1,6 @@
+---
+basedir: 'overridden-sql'
+planfile: 'overridden-application.plan'
+migrations_dir: 'overridden-migrations-dir'
+migrations_table: 'overridden_application_migrations'
+connection_string: 'overridden sequel connection string'

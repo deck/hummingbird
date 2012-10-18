@@ -15,9 +15,25 @@ common denominator amongst those databases.
 
 Hummingbird will look for a `hummingbird.yml` in the directory passed
 to `Hummingbird::Configuration.new`.  Hummingbird will also look for a
-user-specific `.hummingbird.yml` in the current working directory.
-The user-specific configuration file will take precidence over the
-configuration in the `hummingbird.yml`.
+user-specific `.hummingbird.yml` in that directory.  The user-specific
+configuration file will take precidence over the configuration in the
+`hummingbird.yml`.  Both the configuration file name and path, and the
+user-specific configuration name and path can be overridden by passing
+`:config_file => config_name` or `:user_config_file => user_config_name`
+to `Hummingbird::Configuration.new`.
+
+For example:
+
+```Ruby
+config = Hummingbird::Configuration.new(
+  Dir.getwd,
+  config_file: 'path/to/config.yml',
+  user_config_file: '/absolute/path/to/user_config.yml'
+)
+```
+The above example will cause Hummingbird to look for the configuration
+file in `File.join(Dir.getwd, 'path/to/config.yml')`, and to look for
+the user's configuration file in `/absolute/path/to/user_config.yml`.
 
 Both of these configuration files are YAML files with the following
 format:

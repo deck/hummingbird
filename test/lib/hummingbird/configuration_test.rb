@@ -89,10 +89,7 @@ describe Hummingbird::Configuration do
       copy_fixture_to(['config',s], File.join(@tempdir, d))
     end
 
-    config = nil
-    FileUtils.stub :pwd, @tempdir do
-      config = Hummingbird::Configuration.new(@tempdir)
-    end
+    config = Hummingbird::Configuration.new(@tempdir)
 
     assert_equal File.expand_path('user-sql', @tempdir),        config.basedir
     assert_equal _with_basedir(config,'user-application.plan'), config.planfile
@@ -105,10 +102,7 @@ describe Hummingbird::Configuration do
       copy_fixture_to(['config',s], File.join(@tempdir, d))
     end
 
-    config = nil
-    FileUtils.stub :pwd, @tempdir do
-      config = Hummingbird::Configuration.new(@tempdir)
-    end
+    config = Hummingbird::Configuration.new(@tempdir)
 
     assert_equal File.expand_path('sql', @tempdir),              config.basedir
     assert_equal _with_basedir(config, 'user-application.plan'), config.planfile
@@ -121,10 +115,7 @@ describe Hummingbird::Configuration do
       copy_fixture_to(['config',s], File.join(@tempdir, d))
     end
 
-    config = nil
-    FileUtils.stub :pwd, @tempdir do
-      config = Hummingbird::Configuration.new(@tempdir)
-    end
+    config = Hummingbird::Configuration.new(@tempdir)
 
     assert_equal File.expand_path('user-sql', @tempdir),       config.basedir
     assert_equal _with_basedir(config, 'application.plan'),    config.planfile
@@ -137,14 +128,73 @@ describe Hummingbird::Configuration do
       copy_fixture_to(['config',s], File.join(@tempdir, d))
     end
 
-    config = nil
-    FileUtils.stub :pwd, @tempdir do
-      config = Hummingbird::Configuration.new(@tempdir)
-    end
+    config = Hummingbird::Configuration.new(@tempdir)
 
     assert_equal File.expand_path('user-sql', @tempdir),         config.basedir
     assert_equal _with_basedir(config, 'user-application.plan'), config.planfile
     assert_equal _with_basedir(config, 'migrations-dir'),        config.migrations_dir
+  end
+
+  it "overrides the base config file name when given a relative :config_file option" do
+    [ ['overridden_config.yml', 'overridden_name.yml'],
+      ['basic_config.yml',      Hummingbird::Configuration::CONFIG_FILE]].each do |s,d|
+      copy_fixture_to(['config',s],File.join(@tempdir,d))
+    end
+
+    config = Hummingbird::Configuration.new(@tempdir, config_file: 'overridden_name.yml')
+
+    assert_equal File.expand_path('overridden-sql', @tempdir),                    config.basedir
+    assert_equal File.expand_path('overridden-application.plan', config.basedir), config.planfile
+    assert_equal File.expand_path('overridden-migrations-dir', config.basedir),   config.migrations_dir
+    assert_equal :overridden_application_migrations,                              config.migrations_table
+    assert_equal 'overridden sequel connection string',                           config.connection_string
+  end
+
+  it "overrides the base config file name when given an absolute :config_file option" do
+    copy_fixture_to(['config','basic_config.yml'], File.join(@tempdir,Hummingbird::Configuration::CONFIG_FILE))
+    overridden_config_path = File.join(tempdir,'config.yml')
+    copy_fixture_to(['config','overridden_config.yml'], overridden_config_path)
+
+    config = Hummingbird::Configuration.new(@tempdir, config_file: overridden_config_path)
+
+    assert_equal File.expand_path('overridden-sql', @tempdir),                    config.basedir
+    assert_equal File.expand_path('overridden-application.plan', config.basedir), config.planfile
+    assert_equal File.expand_path('overridden-migrations-dir', config.basedir),   config.migrations_dir
+    assert_equal :overridden_application_migrations,                              config.migrations_table
+    assert_equal 'overridden sequel connection string',                           config.connection_string
+  end
+
+  it "overrides the base user config file name when given a relative :user_config_file option" do
+    [ ['basic_config.yml',      Hummingbird::Configuration::CONFIG_FILE],
+      ['user_config.yml',       Hummingbird::Configuration::USER_CONFIG_FILE],
+      ['overridden_config.yml', 'overridden_name.yml']].each do |s,d|
+      copy_fixture_to(['config',s],File.join(@tempdir,d))
+    end
+
+    config = Hummingbird::Configuration.new(@tempdir, user_config_file: 'overridden_name.yml')
+
+    assert_equal File.expand_path('overridden-sql', @tempdir),                    config.basedir
+    assert_equal File.expand_path('overridden-application.plan', config.basedir), config.planfile
+    assert_equal File.expand_path('overridden-migrations-dir', config.basedir),   config.migrations_dir
+    assert_equal :overridden_application_migrations,                              config.migrations_table
+    assert_equal 'overridden sequel connection string',                           config.connection_string
+  end
+
+  it "overrides the base user config file name when given an absolute :user_config_file option" do
+    overridden_config_path = File.join(tempdir,'overridden_name.yml')
+    [ ['basic_config.yml',      Hummingbird::Configuration::CONFIG_FILE],
+      ['user_config.yml',       Hummingbird::Configuration::USER_CONFIG_FILE],
+      ['overridden_config.yml', overridden_config_path]].each do |s,d|
+      copy_fixture_to(['config',s],File.expand_path(d,@tempdir))
+    end
+
+    config = Hummingbird::Configuration.new(@tempdir, user_config_file: overridden_config_path)
+
+    assert_equal File.expand_path('overridden-sql', @tempdir),                    config.basedir
+    assert_equal File.expand_path('overridden-application.plan', config.basedir), config.planfile
+    assert_equal File.expand_path('overridden-migrations-dir', config.basedir),   config.migrations_dir
+    assert_equal :overridden_application_migrations,                              config.migrations_table
+    assert_equal 'overridden sequel connection string',                           config.connection_string
   end
 
   def _with_basedir(config,path)

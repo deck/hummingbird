@@ -5,13 +5,16 @@ class Hummingbird
     CONFIG_FILE = 'hummingbird.yml'
     USER_CONFIG_FILE = '.hummingbird.yml'
 
-    def initialize(config_dir)
-      @config_dir = config_dir
+    def initialize(config_dir,opts={})
+      opts[:config_file]      ||= CONFIG_FILE
+      opts[:user_config_file] ||= USER_CONFIG_FILE
 
-      @config = Optimism.require(
-        File.expand_path(File.join(config_dir, CONFIG_FILE)),
-        File.expand_path(File.join(FileUtils.pwd, USER_CONFIG_FILE))
-      )
+      config_file_names = [opts[:config_file],opts[:user_config_file]].map do |f|
+        File.expand_path(f,config_dir)
+      end
+
+      @config_dir = config_dir
+      @config = Optimism.require(*config_file_names)
     end
 
     def basedir
