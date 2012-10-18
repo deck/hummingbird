@@ -21,14 +21,14 @@ describe Hummingbird::Configuration do
 
     config = Hummingbird::Configuration.new(@tempdir)
 
-    assert_equal 'sql',                                     config.basedir
+    assert_equal File.expand_path('sql',@tempdir),          config.basedir
     assert_equal _with_basedir(config, 'application.plan'), config.planfile
     assert_equal _with_basedir(config, 'migrations-dir'),   config.migrations_dir
     assert_equal :application_migrations,                   config.migrations_table
     assert_equal 'sequel connection string',                config.connection_string
   end
 
-  it "defaults #basedir to be '.'" do
+  it "defaults #basedir to be the configuration directory" do
     copy_fixture_to(
       ['config','no_basedir_config.yml'],
       File.join(@tempdir, Hummingbird::Configuration::CONFIG_FILE)
@@ -36,7 +36,7 @@ describe Hummingbird::Configuration do
 
     config = Hummingbird::Configuration.new(@tempdir)
 
-    assert_equal '.', config.basedir
+    assert_equal @tempdir, config.basedir
   end
 
   it "defaults #planfile to be basedir + 'hummingbird.plan'" do
@@ -94,7 +94,7 @@ describe Hummingbird::Configuration do
       config = Hummingbird::Configuration.new(@tempdir)
     end
 
-    assert_equal 'user-sql',                                    config.basedir
+    assert_equal File.expand_path('user-sql', @tempdir),        config.basedir
     assert_equal _with_basedir(config,'user-application.plan'), config.planfile
     assert_equal _with_basedir(config,'user-migrations-dir'),   config.migrations_dir
   end
@@ -110,7 +110,7 @@ describe Hummingbird::Configuration do
       config = Hummingbird::Configuration.new(@tempdir)
     end
 
-    assert_equal 'sql',                                          config.basedir
+    assert_equal File.expand_path('sql', @tempdir),              config.basedir
     assert_equal _with_basedir(config, 'user-application.plan'), config.planfile
     assert_equal _with_basedir(config, 'user-migrations-dir'),   config.migrations_dir
   end
@@ -126,7 +126,7 @@ describe Hummingbird::Configuration do
       config = Hummingbird::Configuration.new(@tempdir)
     end
 
-    assert_equal 'user-sql',                                   config.basedir
+    assert_equal File.expand_path('user-sql', @tempdir),       config.basedir
     assert_equal _with_basedir(config, 'application.plan'),    config.planfile
     assert_equal _with_basedir(config, 'user-migrations-dir'), config.migrations_dir
   end
@@ -142,7 +142,7 @@ describe Hummingbird::Configuration do
       config = Hummingbird::Configuration.new(@tempdir)
     end
 
-    assert_equal 'user-sql',                                     config.basedir
+    assert_equal File.expand_path('user-sql', @tempdir),         config.basedir
     assert_equal _with_basedir(config, 'user-application.plan'), config.planfile
     assert_equal _with_basedir(config, 'migrations-dir'),        config.migrations_dir
   end

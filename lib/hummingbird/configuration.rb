@@ -6,6 +6,8 @@ class Hummingbird
     USER_CONFIG_FILE = '.hummingbird.yml'
 
     def initialize(config_dir)
+      @config_dir = config_dir
+
       @config = Optimism.require(
         File.expand_path(File.join(config_dir, CONFIG_FILE)),
         File.expand_path(File.join(FileUtils.pwd, USER_CONFIG_FILE))
@@ -13,15 +15,15 @@ class Hummingbird
     end
 
     def basedir
-      @basedir ||= @config[:basedir] || '.'
+      @basedir ||= File.expand_path(@config[:basedir] || '.', @config_dir)
     end
 
     def planfile
-      @planfile ||= File.expand_path(File.join(basedir, @config[:planfile] || 'hummingbird.plan'))
+      @planfile ||= File.expand_path(@config[:planfile] || 'hummingbird.plan', basedir)
     end
 
     def migrations_dir
-      @migrations_dir ||= File.expand_path(File.join(basedir, @config[:migrations_dir] || 'migrations'))
+      @migrations_dir ||= File.expand_path(@config[:migrations_dir] || 'migrations', basedir)
     end
 
     def migrations_table
