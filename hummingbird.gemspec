@@ -22,10 +22,12 @@ DESC
   gem.add_dependency 'sequel'
   gem.add_dependency 'optimism'
 
-  gem.add_development_dependency 'rake'
-  gem.add_development_dependency 'minitest'
   gem.add_development_dependency 'guard'
   gem.add_development_dependency 'guard-minitest'
+  gem.add_development_dependency 'minitest'
+  gem.add_development_dependency 'rake'
+  gem.add_development_dependency 'redcarpet'
   gem.add_development_dependency 'simplecov'
   gem.add_development_dependency 'sqlite3'
+  gem.add_development_dependency 'yard'
 end
