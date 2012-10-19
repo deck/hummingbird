@@ -2,7 +2,7 @@ require 'hummingbird/plan_error'
 
 require 'pathname'
 
-class Hummingbird
+module Hummingbird
   class Plan
     attr_reader :migration_dir, :planned_files
 

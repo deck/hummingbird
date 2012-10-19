@@ -1,6 +1,6 @@
 require 'optimism'
 
-class Hummingbird
+module Hummingbird
   class Configuration
     CONFIG_FILE = 'hummingbird.yml'
     USER_CONFIG_FILE = '.hummingbird.yml'

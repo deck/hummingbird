@@ -1,6 +1,6 @@
 require 'sequel'
 
-class Hummingbird
+module Hummingbird
   class Database
     def initialize(connection_string, migrations_table)
       @sequel_db                     = Sequel.connect(connection_string)

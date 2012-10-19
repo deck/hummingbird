@@ -3,5 +3,5 @@ require 'hummingbird/configuration'
 require 'hummingbird/plan'
 require 'hummingbird/database'
 
-class Hummingbird
+module Hummingbird
 end

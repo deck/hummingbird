@@ -1,4 +1,4 @@
-class Hummingbird
+module Hummingbird
   class PlanError < Exception
     attr_reader :already_run_migrations, :planned_files
 
