@@ -1,4 +1,5 @@
 require 'optimism'
+require 'yaml'
 
 module Hummingbird
   # Helper class to handle reading configuration options from YAML
